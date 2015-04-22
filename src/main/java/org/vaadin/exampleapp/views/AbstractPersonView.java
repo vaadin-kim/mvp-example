@@ -65,22 +65,23 @@ public abstract class AbstractPersonView<A extends com.vaadin.ui.Component>
 	};
 
 	public AbstractPersonView(A rootComponent) {
-		setSizeFull();
 		rootComponent.setSizeFull();
 		setCompositionRoot(rootComponent);
+	}
+
+	@PostConstruct
+	private void init() {
+		setSizeFull();
 		getPersonsTable().setSizeFull();
 		getPersonsTable().setSelectable(true);
 		getPersonsTable().addValueChangeListener(new ValueChangeListener() {
 
 			@Override
 			public void valueChange(ValueChangeEvent event) {
-				getPresenter().personSelected((Person) getPersonsTable().getValue());
+				getPresenter().personSelected(
+						(Person) getPersonsTable().getValue());
 			}
 		});
-	}
-
-	@PostConstruct
-	private void init() {
 		getPresenter().setView(this);
 		getPresenter().enter();
 	}
@@ -168,6 +169,5 @@ public abstract class AbstractPersonView<A extends com.vaadin.ui.Component>
 	}
 
 	protected abstract Table getPersonsTable();
-
 
 }
