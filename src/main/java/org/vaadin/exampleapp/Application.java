@@ -2,6 +2,7 @@ package org.vaadin.exampleapp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
@@ -12,7 +13,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableAutoConfiguration
 @ComponentScan(basePackages = "org.vaadin.exampleapp")
 @EnableTransactionManagement
-public class Application extends SpringBootServletInitializer {
+@SpringBootApplication
+public class Application  extends SpringBootServletInitializer {
 
 	@Override
 	protected SpringApplicationBuilder configure(

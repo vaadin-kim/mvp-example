@@ -2,7 +2,6 @@ package org.vaadin.exampleapp.views.tablet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.vaadin.exampleapp.data.Person;
 import org.vaadin.exampleapp.views.AbstractPersonView;
@@ -11,13 +10,14 @@ import org.vaadin.exampleapp.views.mobile.MobileBasicDetailsForm;
 
 import com.vaadin.addon.touchkit.ui.Toolbar;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
 @Component
-@Scope("ui")
+@UIScope
 public class TabletPersonView extends AbstractPersonView<HorizontalLayout> {
 
 	@Autowired

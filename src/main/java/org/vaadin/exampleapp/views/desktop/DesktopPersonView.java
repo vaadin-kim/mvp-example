@@ -5,16 +5,16 @@ import java.beans.PropertyChangeListener;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Scope;
 import org.vaadin.exampleapp.data.Person;
 import org.vaadin.exampleapp.views.AbstractPersonView;
 import org.vaadin.exampleapp.views.PersonPresenter;
-import org.vaadin.spring.navigator.VaadinView;
 
 import com.vaadin.data.Validator.InvalidValueException;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.HorizontalLayout;
@@ -23,9 +23,9 @@ import com.vaadin.ui.TabSheet.Tab;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
 
-@VaadinView(name = "")
+@UIScope
+@SpringView(name = "")
 @SuppressWarnings("serial")
-@Scope("ui")
 public class DesktopPersonView extends AbstractPersonView<VerticalSplitPanel>
 		implements View, PropertyChangeListener {
 
