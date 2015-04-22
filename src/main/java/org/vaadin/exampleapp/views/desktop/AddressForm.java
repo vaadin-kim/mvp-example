@@ -1,24 +1,27 @@
 package org.vaadin.exampleapp.views.desktop;
 
+import com.vaadin.annotations.DesignRoot;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.declarative.Design;
 
 @SuppressWarnings("serial")
+@DesignRoot
 public class AddressForm extends FormLayout {
 
 	@PropertyId("address.street")
-	private TextField streetField = new TextField("Street");
+	private TextField streetField;
 
 	@PropertyId("address.zip")
-	private TextField zipField = new TextField("Zip");
+	private TextField zipField;
 
 	@PropertyId("address.city")
-	private TextField cityField = new TextField("City");
+	private TextField cityField;
 
 	public AddressForm() {
-		setMargin(true);
-
+		Design.read(this);
+		
 		streetField.setNullRepresentation("");
 		zipField.setNullRepresentation("");
 		cityField.setNullRepresentation("");
@@ -33,10 +36,6 @@ public class AddressForm extends FormLayout {
 		zipField.addValidator(dependentValidator);
 		dependentValidator.addDependentField(cityField);
 		cityField.addValidator(dependentValidator);
-
-		addComponent(streetField);
-		addComponent(zipField);
-		addComponent(cityField);
 	}
 
 }

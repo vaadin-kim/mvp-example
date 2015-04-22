@@ -13,6 +13,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
@@ -22,6 +23,8 @@ public class MobilePersonView extends AbstractPersonView<CssLayout> {
 
 	@Autowired
 	private MobilePersonPresenter presenter;
+	
+	private Table personsTable = new Table();
 
 	private VerticalLayout mainArea = new VerticalLayout();
 	private Toolbar toolbar = new Toolbar();
@@ -34,8 +37,8 @@ public class MobilePersonView extends AbstractPersonView<CssLayout> {
 		setCompositionRoot(mainArea);
 		mainArea.setSizeFull();
 
-		mainArea.addComponent(personsTable);
-		mainArea.setExpandRatio(personsTable, 1);
+		mainArea.addComponent(getPersonsTable());
+		mainArea.setExpandRatio(getPersonsTable(), 1);
 		createMainToolbar();
 		mainArea.addComponent(toolbar);
 	}
@@ -95,6 +98,11 @@ public class MobilePersonView extends AbstractPersonView<CssLayout> {
 	@Override
 	protected void bindLayouts() {
 		binder.bindMemberFields(basicDetailsForm);
+	}
+
+	@Override
+	protected Table getPersonsTable() {
+		return personsTable;
 	}
 
 }

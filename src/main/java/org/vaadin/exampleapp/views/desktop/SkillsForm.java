@@ -8,25 +8,23 @@ import java.util.Locale;
 
 import org.vaadin.exampleapp.data.Skill;
 
+import com.vaadin.annotations.DesignRoot;
 import com.vaadin.data.fieldgroup.PropertyId;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.converter.Converter;
 import com.vaadin.ui.TwinColSelect;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.declarative.Design;
 
+@DesignRoot
 @SuppressWarnings({"serial", "rawtypes", "unchecked"})
 public class SkillsForm extends VerticalLayout {
 
 	@PropertyId("skills")
-	private TwinColSelect skills = new TwinColSelect();
+	private TwinColSelect skills;
 
 	public SkillsForm() {
-		setSizeFull();
-		setMargin(true);
-
-		skills.setHeight("100%");
-		skills.setWidth("450px");
-		skills.setCaption("Skills");
+		Design.read(this);
 		skills.setConverter(new Converter<Object, List>() {
 
 			@Override
@@ -62,8 +60,6 @@ public class SkillsForm extends VerticalLayout {
 			}
 
 		});
-
-		addComponent(skills);
 	}
 
 	public void setAvailableSkills(List<Skill> availableSkills) {

@@ -13,6 +13,7 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
@@ -25,6 +26,7 @@ public class TabletPersonView extends AbstractPersonView<HorizontalLayout> {
 	private PersonPresenter presenter;
 
 	private Toolbar toolbar;
+	private Table personsTable = new Table();
 
 	private MobileBasicDetailsForm basicDetailsForm = new MobileBasicDetailsForm(
 			saveButtonListener, cancelButtonListener);
@@ -34,8 +36,8 @@ public class TabletPersonView extends AbstractPersonView<HorizontalLayout> {
 	public TabletPersonView() {
 		super(new HorizontalLayout());
 		mainContent = new VerticalLayout();
-		mainContent.addComponent(personsTable);
-		mainContent.setExpandRatio(personsTable, 1);
+		mainContent.addComponent(getPersonsTable());
+		mainContent.setExpandRatio(getPersonsTable(), 1);
 
 		createMainToolbar();
 		mainContent.addComponent(toolbar);
@@ -87,6 +89,11 @@ public class TabletPersonView extends AbstractPersonView<HorizontalLayout> {
 	@Override
 	protected void bindLayouts() {
 		binder.bindMemberFields(basicDetailsForm);
+	}
+
+	@Override
+	protected Table getPersonsTable() {
+		return personsTable;
 	}
 
 }

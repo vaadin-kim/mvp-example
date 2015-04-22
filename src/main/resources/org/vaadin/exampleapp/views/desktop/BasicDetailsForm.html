@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="package-mapping"
+          content="my:org.vaadin.exampleapp.views.desktop" />
+  </head>
+  	<body>
+		<v-form-layout margin>
+			<v-text-field caption="First Name" required null-representation="" validation-visible="false" immediate="true" _id="firstnameField" />
+			<v-text-field caption="Last Name" required null-representation="" validation-visible="false" immediate="true" _id="lastnameField" />
+			<v-text-field caption="Email" null-representation="" validation-visible="false" _id="emailField" />
+			<v-combo-box caption="Title" _id="titleSelection">
+				<option>Architect</option>
+				<option>Developer</option>
+				<option>Project Manager</option>
+				<option>Quality Manager</option>
+				<option>Tester</option>
+			</v-combo-box>
+		</v-form-layout>
+	</body>
+</html>

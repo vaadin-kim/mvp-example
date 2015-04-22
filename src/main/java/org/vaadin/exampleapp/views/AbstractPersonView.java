@@ -32,8 +32,6 @@ public abstract class AbstractPersonView<A extends com.vaadin.ui.Component>
 
 	protected PersonModel model;
 
-	protected Table personsTable;
-
 	protected final ClickListener saveButtonListener = new ClickListener() {
 
 		@Override
@@ -70,14 +68,13 @@ public abstract class AbstractPersonView<A extends com.vaadin.ui.Component>
 		setSizeFull();
 		rootComponent.setSizeFull();
 		setCompositionRoot(rootComponent);
-		personsTable = new Table();
-		personsTable.setSizeFull();
-		personsTable.setSelectable(true);
-		personsTable.addValueChangeListener(new ValueChangeListener() {
+		getPersonsTable().setSizeFull();
+		getPersonsTable().setSelectable(true);
+		getPersonsTable().addValueChangeListener(new ValueChangeListener() {
 
 			@Override
 			public void valueChange(ValueChangeEvent event) {
-				getPresenter().personSelected((Person) personsTable.getValue());
+				getPresenter().personSelected((Person) getPersonsTable().getValue());
 			}
 		});
 	}
@@ -129,7 +126,7 @@ public abstract class AbstractPersonView<A extends com.vaadin.ui.Component>
 				return;
 			}
 
-			if (!personsTable.containsId(evt.getNewValue())) {
+			if (!getPersonsTable().containsId(evt.getNewValue())) {
 				newPersonCreated((Person) evt.getNewValue());
 				return;
 			}
@@ -141,14 +138,14 @@ public abstract class AbstractPersonView<A extends com.vaadin.ui.Component>
 	}
 
 	protected void existingPersonSelected(Person person) {
-		personsTable.setValue(person);
-		Item item = personsTable.getItem(person);
+		getPersonsTable().setValue(person);
+		Item item = getPersonsTable().getItem(person);
 		binder.setItemDataSource(item);
 		bindLayouts();
 	}
 
 	protected void newPersonCreated(Person person) {
-		personsTable.setValue(null);
+		getPersonsTable().setValue(null);
 		BeanItem<Person> item = new BeanItem<Person>(person);
 		item.addNestedProperty("address.street");
 		item.addNestedProperty("address.zip");
@@ -158,7 +155,7 @@ public abstract class AbstractPersonView<A extends com.vaadin.ui.Component>
 	}
 
 	protected void nullSelection() {
-		personsTable.setValue(null);
+		getPersonsTable().setValue(null);
 	}
 
 	protected void viewDataUpdated() {
@@ -166,8 +163,11 @@ public abstract class AbstractPersonView<A extends com.vaadin.ui.Component>
 				Person.class);
 		container.addNestedContainerBean("address");
 		container.addAll(model.getPersons());
-		personsTable.setContainerDataSource(container);
-		personsTable.setVisibleColumns(getVisibleColumns());
+		getPersonsTable().setContainerDataSource(container);
+		getPersonsTable().setVisibleColumns(getVisibleColumns());
 	}
+
+	protected abstract Table getPersonsTable();
+
 
 }

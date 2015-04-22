@@ -9,6 +9,7 @@ import org.vaadin.exampleapp.data.Person;
 import org.vaadin.exampleapp.views.AbstractPersonView;
 import org.vaadin.exampleapp.views.PersonPresenter;
 
+import com.vaadin.annotations.DesignRoot;
 import com.vaadin.data.Validator.InvalidValueException;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.navigator.View;
@@ -17,11 +18,12 @@ import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Field;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TabSheet.Tab;
+import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
+import com.vaadin.ui.declarative.Design;
 
 @UIScope
 @SpringView(name = "")
@@ -33,61 +35,34 @@ public class DesktopPersonView extends AbstractPersonView<VerticalSplitPanel>
 	@Qualifier("desktop")
 	private PersonPresenter presenter;
 
-	private final VerticalLayout formContent = new VerticalLayout();
-	private final BasicDetailsForm basicDetailsForm = new BasicDetailsForm();
-	private final AddressForm addressForm = new AddressForm();
-	private final SkillsForm skillsForm = new SkillsForm();
+	@DesignRoot("DesktopPersonViewLayout.html")
+	public static class DesktopPersonViewDesign extends VerticalSplitPanel {
+		Button addBtn;
+		Button removeBtn;
+		Button saveBtn;
+		Button cancelBtn;
+		VerticalLayout formContent;
+		TabSheet tabs;
+		BasicDetailsForm basicDetailsForm;
+		AddressForm addressForm;
+		SkillsForm skillsForm;
+		Table personsTable;
 
-	private TabSheet tabs;
+		public DesktopPersonViewDesign() {
+			Design.read(this);
+		}
 
-	private Button addBtn = new Button("+", addButtonListener);
-	private Button removeBtn = new Button("-", removeButtonListener);
+	}
+
+	private DesktopPersonViewDesign design;
 
 	public DesktopPersonView() {
-		super(new VerticalSplitPanel());
-		VerticalLayout top = new VerticalLayout();
-		top.setSizeFull();
-
-		HorizontalLayout toolbar = new HorizontalLayout();
-
-		toolbar.addComponent(addBtn);
-		toolbar.addComponent(removeBtn);
-		toolbar.setSpacing(true);
-
-		top.addComponent(toolbar);
-		top.addComponent(personsTable);
-		top.setExpandRatio(personsTable, 1);
-		addComponent(top);
-
-		tabs = new TabSheet();
-		basicDetailsForm.setCaption("Basic details");
-		tabs.addComponent(basicDetailsForm);
-
-		addressForm.setCaption("Address");
-		tabs.addComponent(addressForm);
-
-		skillsForm.setCaption("Skills");
-		tabs.addComponent(skillsForm);
-
-		tabs.setSizeFull();
-		formContent.addComponent(tabs);
-
-		HorizontalLayout buttonLayout = new HorizontalLayout();
-		buttonLayout.setMargin(true);
-		buttonLayout.setSpacing(true);
-
-		Button saveBtn = new Button("Save changes", saveButtonListener);
-		buttonLayout.addComponent(saveBtn);
-
-		Button cancelBtn = new Button("Discard changes", cancelButtonListener);
-		buttonLayout.addComponent(cancelBtn);
-		formContent.addComponent(buttonLayout);
-		formContent.setVisible(false);
-		formContent.setSizeFull();
-		formContent.setExpandRatio(tabs, 1);
-
-		getContent().setSplitPosition(100);
-		addComponent(formContent);
+		super(new DesktopPersonViewDesign());
+		design = (DesktopPersonViewDesign) getContent();
+		design.addBtn.addClickListener(addButtonListener);
+		design.removeBtn.addClickListener(removeButtonListener);
+		design.saveBtn.addClickListener(saveButtonListener);
+		design.cancelBtn.addClickListener(cancelButtonListener);
 	}
 
 	@Override
@@ -111,18 +86,18 @@ public class DesktopPersonView extends AbstractPersonView<VerticalSplitPanel>
 	public void propertyChange(PropertyChangeEvent evt) {
 		super.propertyChange(evt);
 		if ("availableSkills".equals(evt.getPropertyName())) {
-			skillsForm.setAvailableSkills(model.getAvailableSkills());
+			design.skillsForm.setAvailableSkills(model.getAvailableSkills());
 		}
 	}
 
 	private void showForm() {
 		getContent().setSplitPosition(50);
-		formContent.setVisible(true);
-		tabs.setSelectedTab(0);
+		design.formContent.setVisible(true);
+		design.tabs.setSelectedTab(0);
 	}
 
 	private void hideForm() {
-		formContent.setVisible(false);
+		design.formContent.setVisible(false);
 		getContent().setSplitPosition(100);
 	}
 
@@ -151,7 +126,7 @@ public class DesktopPersonView extends AbstractPersonView<VerticalSplitPanel>
 	}
 
 	private Tab findTabForField(Field<?> f) {
-		Tab tab = tabs.getTab(f.getParent());
+		Tab tab = design.tabs.getTab(f.getParent());
 		return tab;
 	}
 
@@ -162,10 +137,12 @@ public class DesktopPersonView extends AbstractPersonView<VerticalSplitPanel>
 	}
 
 	private void clearTabCaptionsFromErrorIndicator() {
-		tabs.getTab(basicDetailsForm).setCaption(
-				tabs.getTab(basicDetailsForm).getCaption().replace(" (!)", ""));
-		tabs.getTab(addressForm).setCaption(
-				tabs.getTab(addressForm).getCaption().replace(" (!)", ""));
+		design.tabs.getTab(design.basicDetailsForm).setCaption(
+				design.tabs.getTab(design.basicDetailsForm).getCaption()
+						.replace(" (!)", ""));
+		design.tabs.getTab(design.addressForm).setCaption(
+				design.tabs.getTab(design.addressForm).getCaption()
+						.replace(" (!)", ""));
 	}
 
 	@Override
@@ -175,13 +152,18 @@ public class DesktopPersonView extends AbstractPersonView<VerticalSplitPanel>
 
 	@Override
 	protected void bindLayouts() {
-		binder.bindMemberFields(basicDetailsForm);
-		binder.bindMemberFields(addressForm);
-		binder.bindMemberFields(skillsForm);
+		binder.bindMemberFields(design.basicDetailsForm);
+		binder.bindMemberFields(design.addressForm);
+		binder.bindMemberFields(design.skillsForm);
 	}
 
 	@Override
 	public void enter(ViewChangeEvent event) {
 		getPresenter().enter();
+	}
+
+	@Override
+	protected Table getPersonsTable() {
+		return ((DesktopPersonViewDesign) getContent()).personsTable;
 	}
 }

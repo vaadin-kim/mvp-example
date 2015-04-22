@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="package-mapping"
+          content="app:org.vaadin.exampleapp.views.desktop" />
+  </head>
+  <body>
+		<v-vertical-split-panel size-full split-position="100" _id="root">
+			<v-vertical-layout size-full>
+				<v-horizontal-layout spacing>
+					<v-button _id="addBtn">+</v-button>
+					<v-button _id="removeBtn">-</v-button>
+				</v-horizontal-layout>
+				<v-table size-full :expand _id="personsTable" />
+			</v-vertical-layout>
+			<v-vertical-layout size-full visible="false" _id="formContent">
+				<v-tab-sheet size-full :expand _id="tabs">
+					<tab caption="Basic details">
+						<app-basic-details-form _id="basicDetailsForm" />
+					</tab>
+					<tab caption="Address">
+						<app-address-form _id="addressForm" />
+					</tab>
+					<tab caption="Skills">
+						<app-skills-form _id="skillsForm" />
+					</tab>
+				</v-tab-sheet>
+				<v-horizontal-layout width-full margin spacing>
+					<v-button _id="saveBtn">Save changes</v-button>
+					<v-button _id="cancelBtn" :expand>Discard changes</v-button>
+				</v-horizontal-layout>
+			</v-vertical-layout>
+		</v-vertical-split-panel>
+	</body>
+</html>
